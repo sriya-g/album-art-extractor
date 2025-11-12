@@ -5,7 +5,10 @@ Python script that extracts album art from MP3 and FLAC files and saves it as a 
 Works with both single files and music folders.
 
 ## Usage
-In the command line:
+
+Download extractor.py.
+
+In the command line, same directory as extractor.py:
 ``````
 python3 extractor.py <music_directory> [output_directory]
 ``````
