@@ -56,7 +56,17 @@ def extract_album_art(music_file_path, output_dir):
 
         # Sanitize album name for filename
         sanitized_album_name = "".join(c for c in album_name if c.isalnum() or c in (' ', '_')).rstrip()
+        
+        if len(output_dir) >= 255:
+            raise ValueError(f"Output directory path is too long: {output_dir}")
+
         bmp_filename = os.path.join(output_dir, f"{sanitized_album_name}.bmp")
+
+        if len(bmp_filename) >= 255:
+            # Shorten the filename to fit within the 255 character limit
+            max_len = 255 - len(output_dir) - len(os.path.sep) - len(".bmp")
+            sanitized_album_name = sanitized_album_name[:max_len]
+            bmp_filename = os.path.join(output_dir, f"{sanitized_album_name}.bmp")
 
         # Process image
         image = Image.open(io.BytesIO(image_data))
