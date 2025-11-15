@@ -1,6 +1,7 @@
 
 import os
 import sys
+import re
 from mutagen.flac import FLAC
 from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, APIC
@@ -55,7 +56,8 @@ def extract_album_art(music_file_path, output_dir):
             return
 
         # Sanitize album name for filename
-        sanitized_album_name = "".join(c for c in album_name if c.isalnum() or c in (' ', '_')).rstrip()
+        sanitized_album_name = re.sub(r'[\\/:<>?*|]', '_', album_name)
+
         
         if len(output_dir) >= 255:
             raise ValueError(f"Output directory path is too long: {output_dir}")
