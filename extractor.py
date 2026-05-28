@@ -83,14 +83,17 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Extract album art and convert to BMP.")
     parser.add_argument("input_path", help="The path to the music file or directory.")
-    parser.add_argument("output_path", nargs="?", default=None, help="The directory to save the BMP file (optional).")
-    parser.add_argument("-s", "--size", type=int, default=100, help="Size of the output BMP in pixels (e.g., 300 for 300x300).")
+    parser.add_argument("output_path", nargs="?", default=None, help="(Optional) The directory to save the BMP file.")
+    parser.add_argument("-s", "--size", type=int, default=100, help="(Optional) Size of the output BMP in pixels (e.g., 300 for 300x300). Any size greater than 600 will be set to 600.")
     
     args = parser.parse_args()
 
     input_path = args.input_path
     output_path = args.output_path
-    size = args.size
+    if args.size > 600:
+        size = 600
+    else:
+        size = args.size
 
     if output_path and not os.path.exists(output_path):
         os.makedirs(output_path)

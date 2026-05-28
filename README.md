@@ -25,6 +25,6 @@ File name priority:
 - "cover.bmp"
 
 ## Flags
-- -s [size] changes all output bmp files to be sizexsize instead of the default 100x100.
-    - There may be a size limit! I haven't tested files larger than 100x100 on Rockbox yet.
+- -s [size] or --size [size] changes all output bmp files to be sizexsize instead of the default 100x100.
+    - Rockbox may have issues displaying files larger than 600x600; **any size value greater than 600 will be set to 600.**
 - -h or --help displays a list of all flags/arguments
