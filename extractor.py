@@ -1,4 +1,3 @@
-
 import os
 import sys
 import re
@@ -7,8 +6,9 @@ from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, APIC
 from PIL import Image
 import io
+import argparse
 
-def extract_album_art(music_file_path, output_dir):
+def extract_album_art(music_file_path, output_dir, output_size=100):
     """
     Extracts album art from a music file, converts it to a 100x100 BMP,
     and saves it in the output directory.
@@ -72,7 +72,7 @@ def extract_album_art(music_file_path, output_dir):
 
         # Process image
         image = Image.open(io.BytesIO(image_data))
-        resized_image = image.resize((100, 100))
+        resized_image = image.resize((output_size, output_size))
         resized_image.save(bmp_filename, 'BMP')
         print(f"Saved album art to: {bmp_filename}")
 
@@ -80,12 +80,17 @@ def extract_album_art(music_file_path, output_dir):
         print(f"Error processing {music_file_path}: {e}")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python3 extractor.py <music_file_or_directory> [output_directory]")
-        sys.exit(1)
+    import argparse
+    parser = argparse.ArgumentParser(description="Extract album art and convert to BMP.")
+    parser.add_argument("input_path", help="The path to the music file or directory.")
+    parser.add_argument("output_path", nargs="?", default=None, help="The directory to save the BMP file (optional).")
+    parser.add_argument("-s", "--size", type=int, default=100, help="Size of the output BMP in pixels (e.g., 300 for 300x300).")
+    
+    args = parser.parse_args()
 
-    input_path = sys.argv[1]
-    output_path = sys.argv[2] if len(sys.argv) > 2 else None
+    input_path = args.input_path
+    output_path = args.output_path
+    size = args.size
 
     if output_path and not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -96,10 +101,10 @@ if __name__ == "__main__":
                 if file.lower().endswith(('.mp3', '.flac')):
                     music_file = os.path.join(root, file)
                     output_dir = output_path if output_path else root
-                    extract_album_art(music_file, output_dir)
+                    extract_album_art(music_file, output_dir, size)
     elif os.path.isfile(input_path):
         output_dir = output_path if output_path else os.path.dirname(input_path)
-        extract_album_art(input_path, output_dir)
+        extract_album_art(input_path, output_dir, size)
     else:
         print(f"Input path not found: {input_path}")
         sys.exit(1)

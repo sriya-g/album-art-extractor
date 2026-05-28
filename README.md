@@ -19,4 +19,12 @@ python3 extractor.py <music_directory> [output_directory]
 ``````
 Output directory is optional. If not specified, image will be in the same directory as the music file.
 
-By default, the image file will be named after the music file's album. If the music file doesn't have an album tag, the image file will be named after the track title. If the track has neither, the image file will be "cover.bmp".
+File name priority:
+- Album name (default)
+- Track name
+- "cover.bmp"
+
+## Flags
+- -s [size] changes all output bmp files to be sizexsize instead of the default 100x100.
+    - There may be a size limit! I haven't tested files larger than 100x100 on Rockbox yet.
+- -h or --help displays a list of all flags/arguments
